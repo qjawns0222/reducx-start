@@ -4,22 +4,26 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
-import { addTodo, completeTodo, showAll, showComplete } from "./redux/action";
-const sub = store.subscribe(() => {
-  console.log(store.getState());
-});
-store.dispatch(addTodo("안녕하세요"));
-store.dispatch(completeTodo(0));
-store.dispatch(addTodo("안녕하세요"));
-store.dispatch(completeTodo(1));
-store.dispatch(addTodo("안녕하세요"));
-store.dispatch(completeTodo(2));
-store.dispatch(showComplete());
-store.dispatch(showAll());
+import { Provider } from "react-redux";
+
+//import { addTodo, completeTodo, showAll, showComplete } from "./redux/action";
+// const sub = store.subscribe(() => {
+//   console.log(store.getState());
+// });
+// store.dispatch(addTodo("안녕하세요"));
+// store.dispatch(completeTodo(0));
+// store.dispatch(addTodo("안녕하세요"));
+// store.dispatch(completeTodo(1));
+// store.dispatch(addTodo("안녕하세요"));
+// store.dispatch(completeTodo(2));
+// store.dispatch(showComplete());
+// store.dispatch(showAll());
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -1,7 +1,21 @@
-import { ADD_TODO, COMPLETE_TODO } from "./action";
+const ADD_TODO = "redux-start/todos/ADD_TODO";
+const COMPLETE_TODO = "redux-start/todos/COMPLETE_TODO";
+export function addTodo(text) {
+  return {
+    type: ADD_TODO,
+    text,
+  };
+}
+
+export function completeTodo(index) {
+  return {
+    type: COMPLETE_TODO,
+    index,
+  };
+}
 const initialtodos = [];
 
-export default function todosReducer(previousState = initialtodos, action) {
+export default function reducer(previousState = initialtodos, action) {
   if (action.type === ADD_TODO) {
     return [...previousState, { text: action.text, done: false }];
   }

@@ -4,7 +4,7 @@ export default function Userlist({ users, dataelect }) {
   useEffect(() => {
     dataelect();
   }, [dataelect]);
-  console.log(users);
+
   if (users.length === 0) {
     return <div>데이터가 없습니다</div>;
   }

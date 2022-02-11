@@ -1,7 +1,9 @@
 import { applyMiddleware, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+
 import thunk from "redux-thunk";
-import todoApp from "./reduce";
+import todoApp from "./modules/todos";
+import promise from "redux-promise-middleware";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 // function middleware1(store) {
 //   console.log("1-1");
@@ -28,6 +30,9 @@ import todoApp from "./reduce";
 //   };
 // }
 
-const store = createStore(todoApp, applyMiddleware(thunk));
+const store = createStore(
+  todoApp,
+  composeWithDevTools(applyMiddleware(thunk, promise))
+);
 
 export default store;

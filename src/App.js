@@ -1,18 +1,20 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Todolistcontainer from "./container/Todolistcontainer";
-import Addtodocontainer from "./container/Addtodocontainer";
-import Userlistcontainser from "./container/Userlistcontainer";
+
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Todos from "./pages/Todos";
+import Users from "./pages/User";
+import history from "./history";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Userlistcontainser />
-        <Todolistcontainer />
-        <Addtodocontainer />
-      </header>
-    </div>
+    <Router history={history}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/todos" element={<Todos />} />
+        <Route path="/Users" element={<Users />} />
+      </Routes>
+    </Router>
   );
 }
 

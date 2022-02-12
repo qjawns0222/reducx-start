@@ -1,10 +1,11 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const DATA_START = "redux-start/users/DATA_START";
 const DATA_END = "redux-start/users/DATA_END";
 const DATA_ERROR = "redux-start/users/DATA_ERROR";
 const GET_USERS = "redux-start/users/GET_USERS";
-const GET_USERS_FULFILED = "redux-start/users/GET_USERS_FULFILED";
+const GET_USERS_FULFILED = "redux-start/users/GET_USERS_FULFILLED";
 const GET_USERS_PENDING = "redux-start/users/GET_USERS_PENDING";
 const GET_USERS_REJECTED = "redux-start/users/GET_USERS_REJECTED";
 
@@ -40,19 +41,29 @@ export default function reducer(
     return { ...state, loading: true, error: null };
   if (action.type === DATA_END)
     return { ...state, loading: false, data: action.text };
-  if (action.type === GET_USERS_FULFILED || action.type === GET_USERS) {
-    console.log(action.payload);
+  if (action.type === GET_USERS_FULFILED) {
     return { ...state, loading: false, data: action.payload };
   }
+
   return state;
 }
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+}
 export function electThunk() {
-  return async (dispatch) => {
+  return async (dispatch, getstate, { history }) => {
     try {
+      console.log(history);
       dispatch(datastart());
+      await sleep(2000);
       const res = await axios.get("https://api.github.com/users");
-      console.log(res);
-      dispatch(dataend(res));
+
+      dispatch(dataend(res.data));
+      history.push("/");
     } catch (error) {
       dispatch(dataerror(error));
     }
@@ -63,7 +74,6 @@ export function getUsersPromise() {
     type: GET_USERS,
     payload: async () => {
       const res = await axios.get("https://api.github.com/users");
-      console.log(res, "payload");
 
       return res.data;
     },

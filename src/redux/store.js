@@ -1,9 +1,10 @@
 import { applyMiddleware, createStore } from "redux";
 
 import thunk from "redux-thunk";
-import todoApp from "./modules/todos";
+import todoApp from "./modules/reduce";
 import promise from "redux-promise-middleware";
 import { composeWithDevTools } from "redux-devtools-extension";
+import history from "../history";
 
 // function middleware1(store) {
 //   console.log("1-1");
@@ -32,7 +33,9 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 const store = createStore(
   todoApp,
-  composeWithDevTools(applyMiddleware(thunk, promise))
+  composeWithDevTools(
+    applyMiddleware(thunk.withExtraArgument({ history }), promise)
+  )
 );
 
 export default store;

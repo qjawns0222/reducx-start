@@ -5,7 +5,8 @@ import todoApp from "./modules/reduce";
 import promise from "redux-promise-middleware";
 import { composeWithDevTools } from "redux-devtools-extension";
 import history from "../history";
-
+import createSagaMiddleware from "redux-saga";
+import rootSage from "./modules/rootSage";
 // function middleware1(store) {
 //   console.log("1-1");
 //   return (next) => {
@@ -30,12 +31,14 @@ import history from "../history";
 //     };
 //   };
 // }
-
+const SagaMiddle = createSagaMiddleware();
 const store = createStore(
   todoApp,
   composeWithDevTools(
-    applyMiddleware(thunk.withExtraArgument({ history }), promise)
+    applyMiddleware(thunk.withExtraArgument({ history }), promise, SagaMiddle)
   )
 );
+
+SagaMiddle.run(rootSage);
 
 export default store;

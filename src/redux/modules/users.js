@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { call, delay, put, takeEvery } from "redux-saga/effects";
 
 const DATA_START = "redux-start/users/DATA_START";
 const DATA_END = "redux-start/users/DATA_END";
@@ -47,19 +47,22 @@ export default function reducer(
 
   return state;
 }
-function sleep(ms) {
+function Sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(() => {
+      console.log("sleep");
       resolve();
     }, ms);
   });
 }
-export function electThunk() {
+
+export function ElectThunk() {
   return async (dispatch, getstate, { history }) => {
     try {
       console.log(history);
       dispatch(datastart());
-      await sleep(2000);
+      Sleep(2000);
+
       const res = await axios.get("https://api.github.com/users");
 
       dispatch(dataend(res.data));
@@ -78,4 +81,24 @@ export function getUsersPromise() {
       return res.data;
     },
   };
+}
+const GET_USERS_SAGA_START = "GET_USERS_SAGA_START";
+function* getUserSage(action) {
+  try {
+    yield delay(2000);
+
+    const res = yield call(axios.get, "https://api.github.com/users");
+    yield put(dataend(res.data));
+  } catch (error) {
+    yield put(dataerror(error));
+  }
+}
+export function getUsersSagaStart() {
+  return {
+    type: GET_USERS_SAGA_START,
+  };
+}
+
+export function* userSaga() {
+  yield takeEvery(GET_USERS_SAGA_START, getUserSage);
 }

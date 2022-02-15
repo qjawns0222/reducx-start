@@ -8,13 +8,13 @@ import history from "./history";
 
 function App() {
   return (
-    <Router history={history}>
+    <BrowserRouter history={history}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/todos" element={<Todos />} />
         <Route path="/Users" element={<Users />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
